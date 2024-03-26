@@ -19,13 +19,13 @@
 				"vscjava.vscode-java-pack"
 			]
 		}
-	}
+	},
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "docker --version",
+	"postCreateCommand": "sudo apt-get update && sudo apt-get -y install build-essential gdb valgrind"
 
 	// Configure tool-specific properties.
 	// "customizations": {},
