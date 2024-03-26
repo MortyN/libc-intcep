@@ -8,20 +8,21 @@
       "projectName": "libc-intcep_2b9d990c",
       "env": {
         //LD_PRELOAD expects fullpath
-        "LD_PRELOAD": "${workspaceRoot}/intercept.so"
+        "LD_PRELOAD": "${workspaceFolder}/intercept.so"
       }
     },
     {
-      "name": "(gdb) Launch",
+      "name": "(gdb) Debug intercept.c",
       "type": "cppdbg",
       "request": "launch",
       "program": "/usr/local/sdkman/candidates/java/current/bin/java",
       "args": ["${workspaceFolder}/java/Example.java"],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
-      "environment": [{"name": "LD_PRELOAD", "value": "${workspaceRoot}/intercept.so"}],
+      "environment": [{"name": "LD_PRELOAD", "value": "${workspaceFolder}/build/intercept.so"}],
       "externalConsole": false,
       "MIMode": "gdb",
+      "preLaunchTask": "C: gcc build intercept.so",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
