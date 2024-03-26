@@ -16,7 +16,9 @@
 		"vscode": {
 			"extensions": [
 				"ms-vscode.cpptools-extension-pack",
-				"vscjava.vscode-java-pack"
+				"vscjava.vscode-java-pack",
+				"ms-vscode.cmake-tools",
+				"twxs.cmake"
 			]
 		}
 	},
@@ -25,7 +27,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt-get update && sudo apt-get -y install build-essential gdb valgrind"
+	"postCreateCommand": "sudo apt-get update && sudo apt-get -y install build-essential gdb valgrind cmake"
 
 	// Configure tool-specific properties.
 	// "customizations": {},
