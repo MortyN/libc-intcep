@@ -9,7 +9,7 @@ public class Example {
   
       String content = "This is the content to write into file";
   
-      File file = new File("java/filenamejava.txt");
+      File file = new File("./filenamejava.txt");
   
       // if file doesnt exists, then create it
       if (!file.exists()) {

@@ -4,7 +4,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        string fileName = "filenamejava.txt";
+        string fileName = "./filenamejava.txt";
         string content = "Hello";
 
         try
