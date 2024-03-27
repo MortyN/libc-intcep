@@ -1,18 +1,7 @@
 {
   "configurations": [
     {
-      "type": "java",
-      "name": "Example",
-      "request": "launch",
-      "mainClass": "Example",
-      "projectName": "libc-intcep_2b9d990c",
-      "env": {
-        //LD_PRELOAD expects fullpath
-        "LD_PRELOAD": "${workspaceFolder}/intercept.so"
-      }
-    },
-    {
-      "name": "(gdb) Debug intercept.c",
+      "name": "(gdb) Debug Java intercept.c",
       "type": "cppdbg",
       "request": "launch",
       "program": "/usr/local/sdkman/candidates/java/current/bin/java",
@@ -35,7 +24,18 @@
           "ignoreFailures": true
         }
       ]
-    }
+    },
+    {
+      "type": "java",
+      "name": "Launch Java",
+      "request": "launch",
+      "mainClass": "Example",
+      "projectName": "libc-intcep_2b9d990c",
+      "env": {
+        //LD_PRELOAD expects fullpath
+        "LD_PRELOAD": "${workspaceFolder}/build/intercept.so"
+      }
+    },
   ],
   "version": "2.0.0"
 }

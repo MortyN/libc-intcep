@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <string.h>
 
 // Function pointer types for the original functions
 typedef int (*orig_open_f_type)(const char *pathname, int flags, ...);
@@ -16,7 +17,8 @@ typedef int (*fclose_func_t)(FILE *);
 // Function prototypes for the original functions
 int open(const char *pathname, int flags, ...);
 ssize_t write(int fd, const void *buf, size_t count);
-int fclose(FILE *fd);
+
+int *currentfd;
 
 // Function to log the intercepted calls
 void log_write(const char *pathname, ssize_t count)
@@ -44,20 +46,15 @@ int open(const char *pathname, int flags, ...)
     {
         printf("[Intercept] Open file: %s\n", pathname);
     }
+    if(fd != -1 && strstr(pathname, "filenamejava")) {
+        *currentfd = fd;
+    }
     return fd;
 }
 
 // Function to intercept write() calls
 ssize_t write(int fd, const void *buf, size_t count)
 {
-
-    int redirected_fd = open("file2.txt", O_WRONLY | O_CREAT | O_APPEND, 0666);
-    if (redirected_fd == -1)
-    {
-        perror("Error opening file");
-        return -1;
-    }
-
     orig_write_f_type orig_write;
     orig_write = (orig_write_f_type)dlsym(RTLD_NEXT, "write");
     ssize_t ret = orig_write(fd, buf, count);
@@ -74,18 +71,35 @@ ssize_t write(int fd, const void *buf, size_t count)
         }
     }
 
-    ssize_t written = write(redirected_fd, buf, count);
-    if (written == -1)
-    {
-        perror("Error writing to file2.txt");
-        close(redirected_fd);
-        return -1;
+    if(fd != -1 && currentfd != NULL && fd == *currentfd) {
+        printf("[Intercept] HORRY SHIT");
     }
-
-    close(redirected_fd);
 
     return ret;
 }
+// Function to intercept write() calls
+// ssize_t write(int fd, const void *buf, size_t count) {
+//     // Load the original write function using dlsym
+//     orig_write_f_type original_write = dlsym(RTLD_NEXT, "write");
+
+//     // Get the filename associated with the file descriptor
+//     char filename[256];
+//     if (fcntl(fd, 50, filename) == -1) {
+//         fprintf(stderr, "Error getting filename associated with file descriptor.\n");
+//         exit(EXIT_FAILURE);
+//     }
+
+//     // Check if the filename is "filenamejava.txt"
+//     if (strstr(filename, "filenamejava.txt") != NULL) {
+//         // Writing to a file with filename "filenamejava.txt"
+//         fwrite(buf, sizeof(char), count, stdout);
+//     }
+
+//     // Call the original write function to perform the actual write
+//     ssize_t result = original_write(fd, buf, count);
+
+//     return result;
+// }
 
 // Function to intercept close() calls
 // int close(int fd)
@@ -100,39 +114,26 @@ ssize_t write(int fd, const void *buf, size_t count)
 //     return ret;
 // }
 
-// Function to intercept close() calls
-int fclose(FILE *stream)
-{
-    // Load the original fclose function using dlsym
-    fclose_func_t original_fclose = dlsym(RTLD_NEXT, "fclose");
+// Define the hook function for fclose
+// int fclose(FILE *stream) {
+//     // Load the original fclose function using dlsym
+//     fclose_func_t original_fclose = dlsym(RTLD_NEXT, "fclose");
 
-    // Open file for writing the copied content
-    FILE *copy_file = fopen("text2.txt", "a");
-    if (copy_file == NULL)
-    {
-        fprintf(stderr, "Error opening text2.txt for writing.\n");
-        exit(EXIT_FAILURE);
-    }
+//     // Backup current position of the stream
+//     long original_position = ftell(stream);
 
-    // Backup current position of the stream
-    long original_position = ftell(stream);
+//     // Set the file position indicator to the beginning of the file
+//     rewind(stream);
 
-    // Set the file position indicator to the beginning of the file
-    rewind(stream);
+//     // Print contents of the stream
+//     int c;
+//     while ((c = fgetc(stream)) != EOF) {
+//         putchar(c);
+//     }
 
-    // Copy contents of the stream
-    int c;
-    while ((c = fgetc(stream)) != EOF)
-    {
-        fputc(c, copy_file);
-    }
+//     // Restore original file position
+//     fseek(stream, original_position, SEEK_SET);
 
-    // Restore original file position
-    fseek(stream, original_position, SEEK_SET);
-
-    // Close the copied file
-    fclose(copy_file);
-
-    // Call the original fclose function
-    return original_fclose(stream);
-}
+//     // Call the original fclose function
+//     return original_fclose(stream);
+// }
