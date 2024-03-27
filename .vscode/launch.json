@@ -5,10 +5,17 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "/usr/local/sdkman/candidates/java/current/bin/java",
-      "args": ["${workspaceFolder}/java/Example.java"],
+      "args": [
+        "${workspaceFolder}/java/Example.java"
+      ],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
-      "environment": [{"name": "LD_PRELOAD", "value": "${workspaceFolder}/build/intercept.so"}],
+      "environment": [
+        {
+          "name": "LD_PRELOAD",
+          "value": "${workspaceFolder}/build/intercept.so"
+        }
+      ],
       "externalConsole": false,
       "MIMode": "gdb",
       "preLaunchTask": "C: gcc build intercept.so",
@@ -22,6 +29,10 @@
           "description": "Set Disassembly Flavor to Intel",
           "text": "-gdb-set disassembly-flavor intel",
           "ignoreFailures": true
+        },
+        {
+          "description": "Ignore SIG34 (real-time) signal: https://stackoverflow.com/questions/27241575/why-does-java-app-crash-in-gdb-but-runs-normally-in-real-life",
+          "text": "handle SIGSEGV nostop noprint pass"
         }
       ]
     },
@@ -30,10 +41,19 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "/usr/share/dotnet/dotnet",
-      "args": ["run", "--project", "${workspaceFolder}/csharp/csharp.csproj"],
+      "args": [
+        "run",
+        "--project",
+        "${workspaceFolder}/csharp/csharp.csproj"
+      ],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
-      "environment": [{"name": "LD_PRELOAD", "value": "${workspaceFolder}/build/intercept.so"}],
+      "environment": [
+        {
+          "name": "LD_PRELOAD",
+          "value": "${workspaceFolder}/build/intercept.so"
+        }
+      ],
       "externalConsole": false,
       "MIMode": "gdb",
       "preLaunchTask": "C: gcc build intercept.so",
@@ -51,7 +71,7 @@
         {
           "description": "Ignore SIG34 (real-time) signal",
           "text": "handle SIG34 nostop noprint pass"
-      }
+        }
       ]
     },
     {
