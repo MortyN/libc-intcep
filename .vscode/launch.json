@@ -26,6 +26,35 @@
       ]
     },
     {
+      "name": "(gdb) Debug C# intercept.c",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/usr/share/dotnet/dotnet",
+      "args": ["run", "--project", "${workspaceFolder}/csharp/csharp.csproj"],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [{"name": "LD_PRELOAD", "value": "${workspaceFolder}/build/intercept.so"}],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "preLaunchTask": "C: gcc build intercept.so",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Ignore SIG34 (real-time) signal",
+          "text": "handle SIG34 nostop noprint pass"
+      }
+      ]
+    },
+    {
       "type": "java",
       "name": "Launch Java",
       "request": "launch",

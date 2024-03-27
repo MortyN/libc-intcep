@@ -27,4 +27,4 @@ docker_copy_files:
 	docker cp 56829c3950ea:/app/filenamejava.txt file.txt
 
 intercept_compile:
-	gcc -Wall -fPIC -shared -o intercept.so intercept.c -ldl -ggdb
+	gcc -Wall -fPIC -shared -o intercept.so intercept.c -ldl -ggdb -O0

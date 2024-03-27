@@ -10,7 +10,8 @@
 			"enableNonRootDocker": "true",
 			"moby": "true"
 		},
-		"ghcr.io/devcontainers/features/java:1": {}
+		"ghcr.io/devcontainers/features/java:1": {},
+		"ghcr.io/devcontainers/features/dotnet:2": {}
 	},
 	"customizations": {
 		"vscode": {
@@ -18,7 +19,8 @@
 				"ms-vscode.cpptools-extension-pack",
 				"vscjava.vscode-java-pack",
 				"ms-vscode.cmake-tools",
-				"twxs.cmake"
+				"twxs.cmake",
+				"ms-dotnettools.csharp"
 			]
 		}
 	},
