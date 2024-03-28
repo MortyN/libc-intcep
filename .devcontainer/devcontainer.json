@@ -11,7 +11,8 @@
 			"moby": "true"
 		},
 		"ghcr.io/devcontainers/features/java:1": {},
-		"ghcr.io/devcontainers/features/dotnet:2": {}
+		"ghcr.io/devcontainers/features/dotnet:2": {},
+		"ghcr.io/devcontainers/features/go:1": {}
 	},
 	"customizations": {
 		"vscode": {
@@ -29,7 +30,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt-get update && sudo apt-get -y install build-essential gdb valgrind cmake"
+	"postCreateCommand": "sudo apt-get update && sudo apt-get -y install build-essential gdb valgrind cmake clang llvm"
 
 	// Configure tool-specific properties.
 	// "customizations": {},

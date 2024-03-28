@@ -13,7 +13,6 @@
         "${workspaceFolder}/build/intercept.so",
         "${workspaceFolder}/intercept.c",
         "-ldl",
-        "-O0",
         "-ggdb"
       ],
       "options": {

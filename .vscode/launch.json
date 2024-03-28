@@ -37,6 +37,39 @@
       ]
     },
     {
+      "name": "(gdb) Debug Go intercept.c",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/usr/local/go/bin/go",
+      "args": [
+        "run",
+        "${workspaceFolder}/go/main.go"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [
+        {
+          "name": "LD_PRELOAD",
+          "value": "${workspaceFolder}/build/intercept.so"
+        }
+      ],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "preLaunchTask": "C: gcc build intercept.so",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        },
+        {
+          "description": "Set Disassembly Flavor to Intel",
+          "text": "-gdb-set disassembly-flavor intel",
+          "ignoreFailures": true
+        },
+      ]
+    },
+    {
       "name": "(gdb) Debug C# intercept.c",
       "type": "cppdbg",
       "request": "launch",
