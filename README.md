@@ -11,7 +11,7 @@ This is a proof of concept repo for intercepting and debugging libc interactions
 
 ## Findings for hooking into golang
 Golang does not utilize libc anymore, and hooking is a bit more difficult. 
-however, hooking into the kernel syscalls directly is possible, here i have made a go binary writing a file named filenamejava.txt:
+however, hooking into the kernel syscalls directly is possible, here i have made a go binary writing a file named `filenamejava.txt` with the content `hello`:
 ```bash
 $ sudo strace -e trace=write -e trace=openat ./writer 
 openat(AT_FDCWD, "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size", O_RDONLY) = 3
