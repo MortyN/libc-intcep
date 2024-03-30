@@ -6,6 +6,8 @@ This is a proof of concept repo for intercepting and debugging interactions betw
 This proof of concept utilizes linux's `LD_PRELOAD` to link shared libraries and most importantly override symbols in existing binary at runtime. This essentially enables adding functionality to existing code with ease, if we know what symbols to interact with, which in the case of libc we do as it is open source.
 For example, in the `intercept.c` code written in the root folder, there are symbol overrides for `open()` and `open64()` (open64 is part of large file extensions), which means whenever the `LD_PRELOAD` hooked binary (written in Java, CSharp etc.) executes a `File.open()` internally, it will instead use symbols from our custom runtime injected `intercept.so` library instead of libc's `libc.so` `open()` or `open64()`.
 
+To avoid any platform specific issues on the host, all of the code here is therefore run through a [vscode devcontainer](https://code.visualstudio.com/docs/devcontainers/containers). The devcontainer consists of all needed extensions and packages needed for developing this proof of concept, including vscode tasks.json and launch.json for building `intercept.so` and debugging our LD_PRELOAD hooked library using GDB vscode integration.
+
 ## Contents of repo
  - vscode devcontainer for local development inside Linux docker container with all needed extensions
  - vscode `tasks.json` and `launch.json` to build interceptor shared object, and attach gdb debugger to whatever programming language is to debug (Java, CSharp etc.)
