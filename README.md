@@ -13,13 +13,13 @@ This is a proof of concept repo for intercepting and debugging libc interactions
 Golang does not utilize libc anymore, and hooking is a bit more difficult. 
 however, hooking into the kernel syscalls directly is possible, here i have made a go binary writing a file named filenamejava.txt:
 ```bash
-$ sudo strace -e trace=write ./writer
-
---- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=8382, si_uid=0} ---
-...
-write(3, "hello", 5)                    = 5
-write(1, "Successfully wrote to filenameja"..., 39Successfully wrote to filenamejava.txt
-) = 39
+$ sudo strace -e trace=write -e trace=openat ./writer 
+openat(AT_FDCWD, "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size", O_RDONLY) = 3
+--- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=9554, si_uid=0} ---
+--- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=9554, si_uid=0} ---
+--- SIGURG {si_signo=SIGURG, si_code=SI_TKILL, si_pid=9554, si_uid=0} ---
+openat(AT_FDCWD, "filenamejava.txt", O_RDWR|O_CREAT|O_TRUNC|O_CLOEXEC, 0666) = 3
+Successfully wrote to filenamejava.txt
 +++ exited with 0 +++
 
 ```
