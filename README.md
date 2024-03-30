@@ -1,10 +1,10 @@
 # Intercepting libc based programming languages
 
-This is a proof of concept repo for intercepting and debugging libc interactions between programming languages like Java, CSharp etc. and the elementary libc library.
+This is a proof of concept repo for intercepting and debugging interactions between programming languages like Java, CSharp etc. and the elementary libc (C Standard Library).
 
 ## How it works
-This proof of concept utilizes linux's LD_PRELOAD to link shared libraries and most importantly override symbols in existing binary at runtime. This essentially means we can with ease add functionality to existing code, if we know what symbols to interact with.
-For example, in the `intercept.c` code written in the root folder, there are symbol overrides for `open()` and `open64` (part of large file extensions), which means whenever the LD_PRELOAD hooked binary (Java, CSharp etc.) executes a file open syscall internally with libc, it will instead run through the custom runtime injected `intercept.so` library instead of `libc.so` code.
+This proof of concept utilizes linux's LD_PRELOAD to link shared libraries and most importantly override symbols in existing binary at runtime. This essentially opens for adding functionality to existing code, if we know what symbols to interact with, which in the case of libc we do as it is open source.
+For example, in the `intercept.c` code written in the root folder, there are symbol overrides for `open()` and `open64()` (open64 is part of large file extensions), which means whenever the LD_PRELOAD hooked binary (written in Java, CSharp etc.) executes a `File.open()` internally, it will instead use symbols from our custom runtime injected `intercept.so` library instead of `libc.so` (libc's shared object) `open()` or `open64()`.
 
 ## Contents of repo
  - vscode devcontainer for local development inside Linux docker container with all needed extensions
