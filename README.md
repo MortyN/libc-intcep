@@ -1,17 +1,22 @@
-# Intercepting programming languages using libc
+# Intercepting libc based programming languages
 
-This is a proof of concept repo for intercepting and debugging libc interactions between programming language like Java and the elementary libc library.
+This is a proof of concept repo for intercepting and debugging libc interactions between programming languages like Java, CSharp etc. and the elementary libc library.
+
+## How it works
+This proof of concept utilizes linux's LD_PRELOAD to link shared libraries and most importantly override symbols in existing binary at runtime. This essentially means we can with ease add functionality to existing code, if we know what symbols to interact with.
+For example, in the `intercept.c` code written in the root folder, there are symbol overrides for `open()` and `open64` (part of large file extensions), which means whenever the LD_PRELOAD hooked binary (Java, CSharp etc.) executes a file open syscall internally with libc, it will instead run through the custom runtime injected `intercept.so` library instead of `libc.so` code.
 
 ## Contents of repo
  - vscode devcontainer for local development inside Linux docker container with all needed extensions
- - vscode tasks. and launch.json to build interceptor shared object, and attach gdb debugger to whatever programming language is to debug (java, csharp etc.)
+ - vscode `tasks.json` and `launch.json` to build interceptor shared object, and attach gdb debugger to whatever programming language is to debug (Java, CSharp etc.)
  - various simple programming language tests
  - intercept.c file, the libc hooks are stored here, which are common for all programming languages utilizing libc.
 
 
 ## Findings for hooking into golang
 Golang does not utilize libc anymore, and hooking is a bit more difficult. 
-however, hooking into the kernel syscalls directly is possible, here i have made a go binary writing a file named `filenamejava.txt` with the content `hello`:
+However, hooking into the kernel syscalls directly is possible, here i have made a go binary writing a file named `filenamejava.txt` with the content `hello`, 
+and traces of both write and openat is present, however only by using ptrace (which strace uses internally):
 ```bash
 $ sudo strace -e trace=write,openat ./writer 
 openat(AT_FDCWD, "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size", O_RDONLY) = 3
@@ -24,7 +29,6 @@ write(1, "Successfully wrote to filenameja"..., 39Successfully wrote to filename
 +++ exited with 0 +++
 
 ```
-
 
 ## Useful docs and Q&A
  - https://catonmat.net/simple-ld-preload-tutorial-part-two
